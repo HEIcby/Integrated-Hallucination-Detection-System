@@ -3,8 +3,9 @@
 [![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/HEIcby/Integrated-Hallucination-Detection-System.svg)](https://github.com/HEIcby/Integrated-Hallucination-Detection-System/stargazers)
+[![RAGtruth Dataset](https://img.shields.io/badge/dataset-RAGtruth-orange.svg)](data/ragtruth/)
 
-🎯 一个集成了HHEM和阿里云通义千问(Qwen)的AI幻觉检测系统，用于评估生成文本的准确性和事实一致性。
+🎯 一个集成了HHEM和阿里云通义千问(Qwen)的AI幻觉检测系统，用于评估生成文本的准确性和事实一致性。现已集成 **RAGtruth 数据集**，支持大规模标准化评估。
 
 ## 📖 简介
 
@@ -21,11 +22,18 @@
 - **Qwen评估**: 使用阿里云通义千问模型检测幻觉内容  
 - **集成评估**: 综合两种方法获得更可靠的评估结果
 
+### 📊 RAGtruth 数据集集成
+- **标准数据集**: 集成了包含 17,790 个响应的大规模幻觉检测数据集
+- **多模型覆盖**: 支持 GPT-4、GPT-3.5、LLaMA-2、Mistral 等主流模型的评估
+- **多任务类型**: 涵盖摘要、问答、结构化数据转文本等任务
+- **精确标注**: 43.1% 的样本包含专业的幻觉标注
+
 ### 🚀 丰富的评估模式
 - ✅ 单次评估 - 快速检测单个文本
 - ✅ 批量评估 - 高效处理大量文本
 - ✅ 方法对比 - 分析不同评估方法的差异
 - ✅ 实时监控 - 持续评估内容质量
+- ✅ 标准测试 - 在 RAGtruth 数据集上的基准评估
 
 ### 🎯 广泛的应用场景
 - 📰 新闻事实核查
@@ -100,16 +108,48 @@ if result.success:
     print(f"✅ 综合置信度: {result.ensemble_confidence:.4f}")
 ```
 
-### 批量评估
+### RAGtruth 数据集评估
 
 ```python
-# 准备批量数据
+from src.ragtruth_loader import RAGtruthLoader, TaskType, SplitType
+
+# 加载 RAGtruth 数据集
+loader = RAGtruthLoader()  # 自动使用项目内的数据
+
+# 查看数据集统计
+loader.print_statistics()
+
+# 获取测试样本
+samples = loader.get_samples(
+    task_type=TaskType.SUMMARY,  # 摘要任务
+    split=SplitType.TEST,        # 测试集
+    max_samples=10               # 最多10个样本
+)
+
+# 在数据集上评估系统性能
+from examples.ragtruth_large_scale_evaluation import LargeScaleEvaluator
+
+evaluator = LargeScaleEvaluator()
+metrics = evaluator.evaluate_system_performance(max_samples=50)
+
+# 查看评估结果
+print(f"HHEM准确率: {metrics['hhem_accuracy']:.4f}")
+print(f"Qwen准确率: {metrics['qwen_accuracy']:.4f}")
+print(f"集成方法F1分数: {metrics['ensemble_f1']:.4f}")
+```
+
+### 快速测试
+
+```python
+# 运行快速测试验证集成效果
+python examples/ragtruth_quick_test.py
+
+# 批量评估示例
 batch_data = [
     {
-        "generated_text": "太阳围绕地球转动",
-        "source_texts": ["地球围绕太阳转动"]
-    },
-    {
+        "generated_text": "Python是一种编程语言",
+        "source_texts": ["Python是一种高级编程语言"]
+    }
         "generated_text": "Python是一种编程语言",
         "source_texts": ["Python是一种高级编程语言"]
     }
@@ -154,20 +194,34 @@ for i, result in enumerate(results):
 
 ```
 Integrated-Hallucination-Detection-System/
-├── 📖 README.md                           # 项目文档
-├── 🚀 src/                                # 核心源代码
-│   ├── __init__.py                        
-│   ├── integrated_hallucination_evaluator.py  # 🎯 主要功能
-│   ├── HHEM_API.py                        # Vectara HHEM接口
-│   └── qwen_hallucination_evaluator.py   # 阿里云Qwen接口
-├── 📚 examples/                           # 使用示例
-│   ├── quick_start.py                     # ⚡ 快速开始
-│   ├── practical_examples.py             # ⭐ 实际应用案例
-│   └── pre_guidance/                      # 🔧 环境配置指南
-│       ├── api_setup_guide.py             
-│       └── SETUP_GUIDE.md                 # 详细配置文档
-└── 🧪 tests/                             # 测试文件
-    └── test_integrated_evaluator.py      # 功能测试
+├── 📖 README.md                                     # 项目文档
+├── � README_EN.md                                  # 英文文档
+├── 📄 LICENSE                                       # 许可证文件
+├── 📋 requirements.txt                              # 生产依赖
+├── 📋 requirements-dev.txt                          # 开发依赖
+├── �🚀 src/                                          # 核心源代码 (1,427行)
+│   ├── __init__.py                                  
+│   ├── integrated_hallucination_evaluator.py       # 🎯 主评估器 (427行)
+│   ├── HHEM_API.py                                  # Vectara HHEM接口 (248行)
+│   ├── qwen_hallucination_evaluator.py             # 阿里云Qwen接口 (368行)
+│   └── ragtruth_loader.py                          # 📊 RAGtruth数据加载器 (348行)
+├── 📚 examples/                                     # 使用示例 (1,681行)
+│   ├── quick_start.py                               # ⚡ 快速开始 (91行)
+│   ├── practical_examples.py                       # ⭐ 实际应用案例 (221行)
+│   ├── ragtruth_quick_test.py                      # 🧪 RAGtruth快速测试 (352行)
+│   ├── ragtruth_evaluation.py                      # 📊 RAGtruth基础评估 (314行)
+│   ├── ragtruth_large_scale_evaluation.py          # 🔬 大规模评估工具 (326行)
+│   ├── hhem_vs_qwen_comparison.py                  # ⚔️ 方法对比分析 (218行)
+│   └── pre_guidance/                                # 🔧 环境配置指南
+│       ├── api_setup_guide.py                      # API配置指南 (156行)
+│       └── SETUP_GUIDE.md                          # 详细配置文档
+├── 🧪 tests/                                       # 测试文件 (312行)
+│   └── test_integrated_evaluator.py                # 集成测试 (309行)
+└── 📊 data/                                        # 数据集
+    └── ragtruth/                                    # RAGtruth数据集 (~35MB)
+        ├── README.md                                # 数据集说明
+        ├── response.jsonl                           # 17,790个响应数据
+        └── source_info.jsonl                       # 2,965个源信息数据
 ```
 
 ## 🎯 应用场景
@@ -296,6 +350,10 @@ def content_quality_middleware(generated_content, references):
 - [x] ✅ 通义千问评估集成  
 - [x] ✅ 集成评估算法
 - [x] ✅ 批量评估支持
+- [x] ✅ RAGtruth数据集集成
+- [x] ✅ 大规模评估工具
+- [x] ✅ 方法对比分析
+- [x] ✅ 阈值优化 (HHEM: 0.5, Qwen: 0.2)
 - [x] ✅ 完整示例和文档
 - [ ] 🔄 支持更多评估模型 (GPT-4, Claude等)
 - [ ] 🔄 添加缓存机制提升性能
@@ -339,6 +397,7 @@ python3 -m pytest tests/
 感谢以下开源项目和服务：
 - [Vectara HHEM](https://vectara.com/) - 提供专业的事实一致性评估
 - [阿里云DashScope](https://dashscope.console.aliyun.com/) - 提供通义千问模型服务
+- [RAGtruth Dataset](https://github.com/amazon-science/RAGtruth) - 提供标准化幻觉检测数据集
 - 所有贡献者和用户的支持与反馈
 
 ## 📄 许可证

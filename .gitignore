@@ -149,3 +149,7 @@ config.py
 *.log
 temp/
 tmp/
+
+# Data files - uncomment to exclude large datasets from repository
+# data/ragtruth/*.jsonl  # Large RAGtruth dataset files (~35MB total)
+# data/
