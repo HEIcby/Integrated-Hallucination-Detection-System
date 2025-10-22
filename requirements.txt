@@ -1,0 +1,7 @@
+# 核心依赖
+requests>=2.25.1
+dashscope>=1.0.0
+
+# 可选依赖 (用于开发和测试)
+pytest>=6.0.0
+pytest-cov>=2.0.0
