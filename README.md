@@ -2,7 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/yourusername/integrated-hallucination-evaluator.svg)](https://github.com/yourusername/integrated-hallucination-evaluator/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/HEIcby/Integrated-Hallucination-Detection-System.svg)](https://github.com/HEIcby/Integrated-Hallucination-Detection-System/stargazers)
 
 🎯 一个集成了HHEM和阿里云通义千问(Qwen)的AI幻觉检测系统，用于评估生成文本的准确性和事实一致性。
 
@@ -39,8 +39,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/integrated-hallucination-evaluator.git
-cd integrated-hallucination-evaluator
+git clone https://github.com/HEIcby/Integrated-Hallucination-Detection-System.git
+cd Integrated-Hallucination-Detection-System
 
 # 安装依赖
 pip install requests dashscope
@@ -76,7 +76,7 @@ python3 tests/test_integrated_evaluator.py
 ```python
 import sys
 import os
-sys.path.append('path/to/integrated-hallucination-evaluator')
+sys.path.append('path/to/Integrated-Hallucination-Detection-System')
 
 from src.integrated_hallucination_evaluator import IntegratedHallucinationEvaluator, EvaluationMethod
 
@@ -153,7 +153,7 @@ for i, result in enumerate(results):
 ## 📁 项目结构
 
 ```
-integrated-hallucination-evaluator/
+Integrated-Hallucination-Detection-System/
 ├── 📖 README.md                           # 项目文档
 ├── 🚀 src/                                # 核心源代码
 │   ├── __init__.py                        
@@ -317,8 +317,8 @@ def content_quality_middleware(generated_content, references):
 ### 开发环境设置
 ```bash
 # 克隆你的Fork
-git clone https://github.com/yourusername/integrated-hallucination-evaluator.git
-cd integrated-hallucination-evaluator
+git clone https://github.com/yourusername/Integrated-Hallucination-Detection-System.git
+cd Integrated-Hallucination-Detection-System
 
 # 安装开发依赖
 pip install -r requirements-dev.txt
@@ -329,8 +329,8 @@ python3 -m pytest tests/
 
 ## � 支持与反馈
 
-- 🐛 **Bug报告**: [提交Issue](https://github.com/yourusername/integrated-hallucination-evaluator/issues)
-- 💡 **功能建议**: [讨论区](https://github.com/yourusername/integrated-hallucination-evaluator/discussions)  
+- 🐛 **Bug报告**: [提交Issue](https://github.com/HEIcby/Integrated-Hallucination-Detection-System/issues)
+- 💡 **功能建议**: [讨论区](https://github.com/HEIcby/Integrated-Hallucination-Detection-System/discussions)  
 - 📧 **邮件联系**: your.email@example.com
 - 💬 **微信群**: 扫码加入技术交流群
 
@@ -351,6 +351,6 @@ python3 -m pytest tests/
 
 **如果这个项目对你有帮助，请给个⭐星标支持！**
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/integrated-hallucination-evaluator.svg?style=social&label=Star)](https://github.com/yourusername/integrated-hallucination-evaluator/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/HEIcby/Integrated-Hallucination-Detection-System.svg?style=social&label=Star)](https://github.com/HEIcby/Integrated-Hallucination-Detection-System/stargazers)
 
 </div>
